@@ -55,7 +55,7 @@ allprojects {
     }
     apply plugin: 'checkstyle'
     checkstyle {
-       configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+        configFile = rootProject.file('config/checkstyle/checkstyle.xml')
     }
 }
 
@@ -72,6 +72,8 @@ dependencies {
     testCompile libraries.asm
 
     testCompile libraries.assertj
+
+    testCompile 'com.puppycrawl.tools:checkstyle:8.3'
 
     //putting 'provided' dependencies on test compile and runtime classpath
     testCompileOnly configurations.compileOnly

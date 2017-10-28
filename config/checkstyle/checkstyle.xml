@@ -27,5 +27,6 @@
             <property name="processJavadoc" value="true"/>
         </module>
     </module>
+    <module name="org.mockitocheckstyle.DeprecationCommentsCheck" />
 </module>
 
