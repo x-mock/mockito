@@ -8,7 +8,6 @@ import org.mockito.internal.creation.settings.CreationSettings;
 import org.mockito.internal.invocation.InvocationMatcher;
 import org.mockito.internal.invocation.MatchersBinder;
 import org.mockito.internal.listeners.StubbingLookupListener;
-import org.mockito.invocation.InvocationContainer;
 import org.mockito.internal.stubbing.InvocationContainerImpl;
 import org.mockito.internal.stubbing.OngoingStubbingImpl;
 import org.mockito.internal.stubbing.StubbedInvocationMatcher;
@@ -16,6 +15,8 @@ import org.mockito.internal.stubbing.answers.DefaultAnswerValidator;
 import org.mockito.internal.verification.MockAwareVerificationMode;
 import org.mockito.internal.verification.VerificationDataImpl;
 import org.mockito.invocation.Invocation;
+import org.mockito.invocation.InvocationContainer;
+import org.mockito.invocation.MatchableInvocation;
 import org.mockito.invocation.MockHandler;
 import org.mockito.mock.MockCreationSettings;
 import org.mockito.verification.VerificationMode;
@@ -88,7 +89,7 @@ public class MockHandlerImpl<T> implements MockHandler<T> {
 
         // look for existing answer for this invocation
         StubbedInvocationMatcher stubbing = invocationContainer.findAnswerFor(invocation);
-        notifyStubbedAnswerLookup(invocation, stubbing);
+        notifyStubbedAnswerLookup(invocation, stubbing, mockSettings);
 
         if (stubbing != null) {
             stubbing.captureArgumentsFrom(invocation);
@@ -123,11 +124,11 @@ public class MockHandlerImpl<T> implements MockHandler<T> {
         return new VerificationDataImpl(invocationContainer, invocationMatcher);
     }
 
-    private void notifyStubbedAnswerLookup(Invocation invocation, StubbedInvocationMatcher exception) {
+    private void notifyStubbedAnswerLookup(Invocation invocation, MatchableInvocation stubbingFound, MockCreationSettings<T> mockSettings) {
         //TODO #793 - when completed, we should be able to get rid of the casting below
-        List<StubbingLookupListener> listeners = ((CreationSettings) mockSettings).getStubbingLookupListeners();
+        List<StubbingLookupListener> listeners = ((CreationSettings) this.mockSettings).getStubbingLookupListeners();
         for (StubbingLookupListener listener : listeners) {
-            listener.onStubbingLookup(invocation, exception);
+            listener.onStubbingLookup(invocation, stubbingFound, mockSettings);
         }
     }
 }

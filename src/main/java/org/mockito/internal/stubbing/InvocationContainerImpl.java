@@ -4,11 +4,6 @@
  */
 package org.mockito.internal.stubbing;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.mockito.internal.invocation.StubInfoImpl;
 import org.mockito.internal.verification.DefaultRegisteredInvocations;
 import org.mockito.internal.verification.RegisteredInvocations;
@@ -20,6 +15,11 @@ import org.mockito.mock.MockCreationSettings;
 import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.Stubbing;
 import org.mockito.stubbing.ValidableAnswer;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.mockito.internal.progress.ThreadSafeMockingProgress.mockingProgress;
 
@@ -84,6 +84,7 @@ public class InvocationContainerImpl implements InvocationContainer, Serializabl
             for (StubbedInvocationMatcher s : stubbed) {
                 if (s.matches(invocation)) {
                     s.markStubUsed(invocation);
+                    //TODO we should mark stubbed at the point of stubbing, not at the point where the stub is being used
                     invocation.markStubbed(new StubInfoImpl(s));
                     return s;
                 }
