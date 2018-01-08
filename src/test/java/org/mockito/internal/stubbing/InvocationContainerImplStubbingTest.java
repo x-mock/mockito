@@ -95,27 +95,6 @@ public class InvocationContainerImplStubbingTest extends TestBase {
     }
 
     @Test
-    public void should_add_throwable_for_void_method() throws Throwable {
-        invocationContainerImpl.addAnswerForVoidMethod(new ThrowsException(new MyException()));
-        invocationContainerImpl.setMethodForStubbing(new InvocationMatcher(simpleMethod));
-
-        try {
-            invocationContainerImpl.answerTo(simpleMethod);
-            fail();
-        } catch (MyException e) {}
-    }
-
-    @Test
-    public void should_validate_throwable_for_void_method() throws Throwable {
-        invocationContainerImpl.addAnswerForVoidMethod(new ThrowsException(new Exception()));
-
-        try {
-            invocationContainerImpl.setMethodForStubbing(new InvocationMatcher(simpleMethod));
-            fail();
-        } catch (MockitoException e) {}
-    }
-
-    @Test
     public void should_validate_throwable() throws Throwable {
         try {
             invocationContainerImpl.addAnswer(new ThrowsException(null), null);
